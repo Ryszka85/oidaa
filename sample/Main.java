@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import sample.Datamodel.Person;
 import sample.Datamodel.Product;
 import sample.Datamodel.ShoppingCart;
+import sample.dbUtil.AddressDbService;
 import sample.dbUtil.ProductDbService;
 import sample.dbUtil.ShoppingCartDbService;
 import sample.dbUtil.TestDBService;
@@ -47,7 +48,8 @@ public class Main extends Application {
             });
             shoppingCarts.forEach(x -> System.out.println(x.getItems()
                     .toString()));
-
+            System.out.println(AddressDbService.getUserAddress(1)
+                    .toString());
 
 
 
