@@ -15,20 +15,30 @@ import sample.validator.PersonValidator;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setTitle("Test");
+        primaryStage.setScene(new Scene(root, 700, 600));
         primaryStage.show();
     }
 
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+    }
+
+    @Override
+    public void init() throws Exception {
+        super.init();
+    }
 
     public static void main(String[] args) {
-        try{
+        try {
 
             final String adrian = "Adrian";
             String ryszka = "Ryszka";
@@ -41,31 +51,21 @@ public class Main extends Application {
 
             List<ShoppingCart> shoppingCarts = ShoppingCartDbService.getShoppingCartByCustomerId(p);
             ProductDbService pd = new ProductDbService();
-            shoppingCarts.forEach(x -> {
+            /*shoppingCarts.forEach(x -> {
                 final int id = x.getId();
                 ProductDbService.productsByShoppingCardId(id)
                         .forEach(pr -> x.addItem(pr, 1, 2));
             });
             shoppingCarts.forEach(x -> System.out.println(x.getItems()
                     .toString()));
-            System.out.println(AddressDbService.getUserAddress(1)
-                    .toString());
+            System.out.println(Objects.requireNonNull(AddressDbService.getUserAddress(1))
+                    .toString());*/
 
-
-
-           /* while (shoppingCart.next()) {
-                System.out.println(shoppingCart.getString("employee_id"));
-                shoppingCart1.add(new ShoppingCart(
-                        person,
-                        shoppingCart.getInt("id_cart"),
-                        shoppingCart.getDate("order_date"))
-                );
-            }
-            shoppingCart1.forEach(s -> System.out.println(s.toString()));*/
             launch(args);
 
-        }catch(Exception e){ System.out.println(e);}
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
-
 
 }
