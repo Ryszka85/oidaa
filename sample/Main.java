@@ -5,23 +5,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sample.Datamodel.Person;
-import sample.Datamodel.Product;
 import sample.Datamodel.ShoppingCart;
-import sample.dbUtil.AddressDbService;
 import sample.dbUtil.ProductDbService;
 import sample.dbUtil.ShoppingCartDbService;
-import sample.dbUtil.TestDBService;
-import sample.validator.PersonValidator;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("fxml/sample.fxml"));
         primaryStage.setTitle("Test");
         primaryStage.setScene(new Scene(root, 700, 600));
         primaryStage.show();
