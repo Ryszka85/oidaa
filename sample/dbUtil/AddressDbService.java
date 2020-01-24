@@ -13,7 +13,6 @@ public class AddressDbService {
 
     static {
         conn = MysqlConnect.getInstance().connect();
-
         try {
             getUserAddress = conn.prepareStatement(GET_USER_ADDRESS);
         } catch (SQLException e) {
