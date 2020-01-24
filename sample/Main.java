@@ -29,31 +29,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         try{
 
-            /*MysqlConnect mysqlConnect = MysqlConnect.getInstance();
-            mysqlConnect.connect();
-            launch(args);
-
-            StringBuilder sb = new StringBuilder("SELECT * FROM user WHERE email = ?");
-            try (PreparedStatement statement = mysqlConnect.connect().prepareStatement(sb.toString())){
-                *//*statement.setInt(1, 1);*//*
-                statement.setString(1, "adrian.ryszka@gmx.net");
-                ResultSet rs = statement.executeQuery();
-                if (rs.next()) System.out.println(rs.getString("password"));
-                else System.out.println("Fuck");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                mysqlConnect.disconnect();
-            }*/
-
-            /*Person person = new UserServiceDb().getCustomerById(2);*/
-            /*System.out.println(person.toString());*/
-            /*new UserServiceDb().getAllCustomers().forEach(x -> System.out.println(x.toString()));*/
-            /*new UserServiceDb().getCartItems(1);*/
-
-            /*TestDBService userServiceDb = new TestDBService();*/
-
-
             final String adrian = "Adrian";
             String ryszka = "Ryszka";
             int a = 33;

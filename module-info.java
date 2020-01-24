@@ -1,4 +1,4 @@
-module oidaa {
+module testDbFx {
     requires javafx.base;
     requires javafx.controls;
     requires javafx.fxml;
