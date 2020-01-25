@@ -26,11 +26,11 @@ public class Controller {
     @FXML
     private ListView<Person> customerTable;
     private ObservableList<Person> customerList;
-    private ObservableList<Address> addresseList;
+    private ObservableList<Address> addressList;
 
     public void initialize() {
         customerList = FXCollections.observableArrayList();
-        addresseList = FXCollections.observableArrayList();
+        addressList = FXCollections.observableArrayList();
         initCustomerNames();
         initAddressColumns();
     }
@@ -46,8 +46,8 @@ public class Controller {
         customerTable.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observableValue, person, selectedPerson) -> {
-                    addresseList.setAll(AddressDbService.getUserAddress(selectedPerson.getId()));
-                    addressTable.setItems(addresseList);
+                    addressList.setAll(AddressDbService.getUserAddress(selectedPerson.getId()));
+                    addressTable.setItems(addressList);
                 });
         customerTable.setItems(customerList);
     }
