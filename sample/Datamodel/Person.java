@@ -1,46 +1,50 @@
 package sample.Datamodel;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Person {
-    private int id;
-    private String firstName;
-    private String lastName;
+    private SimpleIntegerProperty id;
+    private SimpleStringProperty firstName;
+    private SimpleStringProperty lastName;
     private Date birthDate;
 
     public Person(int id, String firstName, String lastName, Date birthDate) {
         this(firstName, lastName, birthDate);
-        this.id = id;
+        this.id = new SimpleIntegerProperty(id);
     }
 
     public Person(String firstName, String lastName, Date birthDate) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = new SimpleStringProperty(firstName);
+        this.lastName = new SimpleStringProperty(lastName);
         this.birthDate = birthDate;
     }
 
     public int getId() {
-        return id;
+        return id.getValue();
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id.set(id);
     }
 
     public String getFirstName() {
-        return firstName;
+        return firstName.getValue();
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName.set(firstName);
     }
 
     public String getLastName() {
-        return lastName;
+        return lastName.getValue();
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName.set(lastName);
     }
 
     public Date getBirthDate() {
@@ -51,13 +55,25 @@ public class Person {
         this.birthDate = birthDate;
     }
 
+    public SimpleIntegerProperty idProperty() {
+        return id;
+    }
+
+    public SimpleStringProperty firstNameProperty() {
+        return firstName;
+    }
+
+    public SimpleStringProperty lastNameProperty() {
+        return lastName;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
-                "id='" + id + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthDate=" + birthDate +
+                "id='" + id +
+                ", firstName=" + getFirstName()  +
+                ", lastName=" + getLastName()  +
+                ", birthDate=" + getBirthDate() +
                 '}';
     }
 }

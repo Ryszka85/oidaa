@@ -31,10 +31,11 @@ public class CustomerDbService {
         try {
             ResultSet customers = getCustomers.executeQuery();
             while (customers.next()) {
+                final int id_person = customers.getInt("id_person");
                 final String first_name = customers.getString("first_name");
                 final String last_name = customers.getString("last_name");
                 final Date birth_date = customers.getDate("birth_date");
-                customer.add(new Person(first_name, last_name, birth_date));
+                customer.add(new Person(id_person, first_name, last_name, birth_date));
             }
             return customer;
         } catch (SQLException e) {

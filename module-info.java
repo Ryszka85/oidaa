@@ -11,4 +11,5 @@ module testDbFx {
     requires java.sql;
     opens sample;
     opens sample.fxController;
+    opens sample.Datamodel;
 }
