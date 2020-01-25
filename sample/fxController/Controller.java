@@ -1,5 +1,4 @@
 package sample.fxController;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,15 +15,16 @@ public class Controller {
     @FXML
     private TableView<Address> addressTable;
     @FXML
-    private TableColumn postal;
+    private TableColumn<Address, String> postal;
     @FXML
-    private TableColumn city;
+    private TableColumn<Address, String> city;
     @FXML
-    private TableColumn streetAddress;
+    private TableColumn<Address, String> streetAddress;
     @FXML
-    private TableColumn countryName;
+    private TableColumn<Address, String> countryName;
     @FXML
     private ListView<Person> customerTable;
+
     private ObservableList<Person> customerList;
     private ObservableList<Address> addressList;
 
@@ -67,9 +67,7 @@ public class Controller {
         };
     }
 
-    private void setCustomerCellName() {
-        customerTable.setCellFactory(Controller::setCellName);
-    }
+    private void setCustomerCellName() { customerTable.setCellFactory(Controller::setCellName); }
 
     private void initAddressColumns() {
         postal = new TableColumn<>("Postal");
