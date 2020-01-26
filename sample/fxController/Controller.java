@@ -3,17 +3,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Datamodel.Address;
 import sample.Datamodel.Person;
-import sample.dbUtil.AddressDbService;
 import sample.dbUtil.CustomerDbService;
+import sample.userDetails.AddressDetailsFx;
+import sample.userDetails.ShoppingCartDetailsFx;
 
 import java.util.Objects;
 
 public class Controller {
     @FXML
-    private TableView<Address> addressTable;
+    private CheckBox show_shopping_cart;
+    @FXML
+    private CheckBox show_address;
+    @FXML
+    private TableView userDetailTable;
     @FXML
     private TableColumn<Address, String> postal;
     @FXML
@@ -27,12 +31,50 @@ public class Controller {
 
     private ObservableList<Person> customerList;
     private ObservableList<Address> addressList;
+    private ObservableList<ShoppingCartDetailsFx> shoppingCartDetailsFx;
 
     public void initialize() {
         customerList = FXCollections.observableArrayList();
         addressList = FXCollections.observableArrayList();
+        shoppingCartDetailsFx = FXCollections.observableArrayList();
+        userDetailTable.getColumns().clear();
         initCustomerNames();
-        initAddressColumns();
+    }
+
+    public void showAddressTable() {
+        if (!show_address.isSelected() || show_shopping_cart.isSelected()) clearUserDetailTable();
+        else if (show_address.isSelected() && !show_shopping_cart.isSelected()) {
+            setAddressDetailTable(customerTable.getSelectionModel().getSelectedItem().getId());
+        }
+    }
+
+    public void clearUserDetailTable() {
+        userDetailTable.getColumns().clear();
+        userDetailTable.setItems(FXCollections.observableArrayList());
+    }
+
+    public void setAddressDetailTable(int id) {
+        AddressDetailsFx.setAddressColumnNames(userDetailTable);
+        addressList.setAll(AddressDetailsFx.setAddressTableData(id));
+        userDetailTable.setItems(addressList);
+    }
+
+    public void setShoppingCartDetailTable(int id) {
+        ShoppingCartDetailsFx.setAddressColumnNames(userDetailTable);
+        shoppingCartDetailsFx.setAll(ShoppingCartDetailsFx.setShoppingCartTableData(id));
+        userDetailTable.setItems(shoppingCartDetailsFx);
+    }
+
+    public void showShoppingCartTable() {
+        if (!show_shopping_cart.isSelected() || show_address.isSelected()) clearUserDetailTable();
+        else if (show_shopping_cart.isSelected() && !show_address.isSelected()) {
+            setShoppingCartDetailTable(customerTable.getSelectionModel().getSelectedItem().getId());
+        }
+    }
+
+
+    public void setShoppingCartTable() {
+
     }
 
     private void initCustomerNames() {
@@ -40,16 +82,20 @@ public class Controller {
         customerList.addAll(Objects.requireNonNull(CustomerDbService.getCustomers()));
         setCustomerCellName();
         setSelectedItemEvent();
+        customerTable.setItems(customerList);
     }
 
     private void setSelectedItemEvent() {
         customerTable.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observableValue, person, selectedPerson) -> {
-                    addressList.setAll(AddressDbService.getUserAddress(selectedPerson.getId()));
-                    addressTable.setItems(addressList);
+                    if (show_address.isSelected() && !show_shopping_cart.isSelected()) {
+                        setAddressDetailTable(selectedPerson.getId());
+                    } else if (show_shopping_cart.isSelected() && !show_address.isSelected()){
+                        setShoppingCartDetailTable(selectedPerson.getId());
+                    }
+
                 });
-        customerTable.setItems(customerList);
     }
 
     private static ListCell<Person> setCellName(ListView<Person> param) {
@@ -69,15 +115,5 @@ public class Controller {
 
     private void setCustomerCellName() { customerTable.setCellFactory(Controller::setCellName); }
 
-    private void initAddressColumns() {
-        postal = new TableColumn<>("Postal");
-        postal.setCellValueFactory(new PropertyValueFactory<Address, String>("postal"));
-        city = new TableColumn<>("City");
-        city.setCellValueFactory(new PropertyValueFactory<Address, String>("city"));
-        streetAddress = new TableColumn<>("StreetAddress");
-        streetAddress.setCellValueFactory(new PropertyValueFactory<Address, String>("streetAddress"));
-        countryName = new TableColumn<>("CountryName");
-        countryName.setCellValueFactory(new PropertyValueFactory<Address, String>("countryName"));
-        addressTable.getColumns().setAll(postal, city, streetAddress, countryName);
-    }
+    private void initAddressColumns() { AddressDetailsFx.setAddressColumnNames(userDetailTable); }
 }

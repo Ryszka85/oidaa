@@ -2,6 +2,7 @@ package sample.Datamodel;
 
 import javafx.beans.property.SimpleStringProperty;
 
+
 public class Address {
     private SimpleStringProperty postal;
     private SimpleStringProperty streetAddress;

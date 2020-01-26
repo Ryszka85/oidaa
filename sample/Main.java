@@ -6,12 +6,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sample.Datamodel.Person;
 import sample.Datamodel.ShoppingCart;
+import sample.dbUtil.AddressDbService;
 import sample.dbUtil.ProductDbService;
 import sample.dbUtil.ShoppingCartDbService;
 
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Main extends Application {
 
@@ -47,15 +49,12 @@ public class Main extends Application {
 
             List<ShoppingCart> shoppingCarts = ShoppingCartDbService.getShoppingCartByCustomerId(p);
             ProductDbService pd = new ProductDbService();
-            /*shoppingCarts.forEach(x -> {
-                final int id = x.getId();
-                ProductDbService.productsByShoppingCardId(id)
-                        .forEach(pr -> x.addItem(pr, 1, 2));
-            });
-            shoppingCarts.forEach(x -> System.out.println(x.getItems()
-                    .toString()));
+            ProductDbService.productsByShoppingCardId(p.getId())
+                    .forEach(pr -> System.out.println(pr.toString()));
+            /*shoppingCarts.forEach(x -> System.out.println(x.getItems()
+                    .toString()));*/
             System.out.println(Objects.requireNonNull(AddressDbService.getUserAddress(1))
-                    .toString());*/
+                    .toString());
 
             launch(args);
 

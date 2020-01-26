@@ -17,8 +17,9 @@ public class ProductDbService {
     private static PreparedStatement getProduct;
     private static PreparedStatement getProductByShoppingCart;
     private static final String GET_PRODUCT = "SELECT * FROM product WHERE id_product = ?";
-    private static final String GET_PRODUCT_BY_SHOOPING_CART = "SELECT * FROM product" +
-            " INNER JOIN cart_position cp on product.id_product = cp.product_id WHERE card_id = ?";
+    private static final String GET_PRODUCT_BY_SHOOPING_CART = "SELECT *  FROM product " +
+            "INNER JOIN cart_position cp on product.id_product = cp.product_id " +
+            "WHERE card_id IN (SELECT id_cart FROM shopping_cart WHERE customer_id = ?)";
 
 
     public ProductDbService() { }
@@ -41,7 +42,10 @@ public class ProductDbService {
             ResultSet productsSet = getProductByShoppingCart.executeQuery();
             while (productsSet.next()) {
                 int id_product = productsSet.getInt("id_product");
-                products.add(getProductById(id_product));
+                String name = productsSet.getString("product_name");
+                float price = productsSet.getFloat("price");
+                String description = productsSet.getString("description");
+                products.add(new Product(id_product, name, description, price));
             }
             return Collections.unmodifiableList(products);
         } catch (SQLException e) {

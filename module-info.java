@@ -12,4 +12,5 @@ module testDbFx {
     opens sample;
     opens sample.fxController;
     opens sample.Datamodel;
+    opens sample.userDetails;
 }

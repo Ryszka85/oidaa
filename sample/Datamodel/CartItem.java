@@ -1,5 +1,7 @@
 package sample.Datamodel;
 
+
+
 public class CartItem {
     private int amount;
     private float discount;
