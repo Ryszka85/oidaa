@@ -1,4 +1,4 @@
-package sample.dbUtil;
+package sample.database.dbUtil;
 
 import sample.Datamodel.Product;
 import sample.validator.Validator;

@@ -1,4 +1,4 @@
-package sample.userDetails;
+package sample.FxGUI.tableView;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -10,7 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Datamodel.ShoppingCart;
-import sample.dbUtil.ShoppingCartDbService;
+import sample.database.dbUtil.ShoppingCartDbService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class ShoppingCartDetailsFx {
+public class ShoppingCartDetailsTable extends UserDetailsTable {
     private SimpleIntegerProperty shoppingCartId;
     private Date orderDate;
     private SimpleIntegerProperty position;
@@ -30,33 +30,36 @@ public class ShoppingCartDetailsFx {
     private List<ShoppingCart> shoppingCarts;
 
     @FXML
-    private static TableColumn<ShoppingCartDetailsFx, Integer> cartIdColumn;
+    private static TableColumn<ShoppingCartDetailsTable, Integer> cartIdColumn;
     @FXML
-    private static TableColumn<ShoppingCartDetailsFx, Date> orderDateColumn;
+    private static TableColumn<ShoppingCartDetailsTable, Date> orderDateColumn;
     @FXML
-    private static TableColumn<ShoppingCartDetailsFx, Integer> positionColumn;
+    private static TableColumn<ShoppingCartDetailsTable, Integer> positionColumn;
     @FXML
-    private static TableColumn<ShoppingCartDetailsFx, Integer> quantityColumn;
+    private static TableColumn<ShoppingCartDetailsTable, Integer> quantityColumn;
     @FXML
-    private static TableColumn<ShoppingCartDetailsFx, Double> discountColumn;
+    private static TableColumn<ShoppingCartDetailsTable, Double> discountColumn;
     @FXML
-    private static TableColumn<ShoppingCartDetailsFx, String> productNameColumn;
+    private static TableColumn<ShoppingCartDetailsTable, String> productNameColumn;
     @FXML
-    private static TableColumn<ShoppingCartDetailsFx, String> productDescriptionColumn;
+    private static TableColumn<ShoppingCartDetailsTable, String> productDescriptionColumn;
 
-    private static ObservableList<ShoppingCartDetailsFx> shoppingCartDetails;
+
+    private static ObservableList<ShoppingCartDetailsTable> shoppingCartDetails;
+    private TableView<ShoppingCartDetailsTable> tableViewDetails;
 
     static {
         shoppingCartDetails = FXCollections.observableArrayList();
     }
 
-    public ShoppingCartDetailsFx(int shoppingCartId,
-                                 Date orderDate,
-                                 int position,
-                                 int amount,
-                                 double discount,
-                                 String productName,
-                                 String productDescription) {
+
+    public ShoppingCartDetailsTable(int shoppingCartId,
+                                    Date orderDate,
+                                    int position,
+                                    int amount,
+                                    double discount,
+                                    String productName,
+                                    String productDescription) {
         this.shoppingCartId = new SimpleIntegerProperty(shoppingCartId);
         this.orderDate = orderDate;
         this.position = new SimpleIntegerProperty(position);
@@ -66,7 +69,13 @@ public class ShoppingCartDetailsFx {
         this.productDescription = new SimpleStringProperty(productDescription);
     }
 
-    public static void setAddressColumnNames(TableView addressTable) {
+
+    public ShoppingCartDetailsTable(TableView<ShoppingCartDetailsTable> test) {
+        this.tableViewDetails = test;
+
+    }
+    @Override
+    public void setColumnNames() {
         initOrderIdColumnName();
         initOrderDateColumnName();
         initPositionColumn();
@@ -74,7 +83,8 @@ public class ShoppingCartDetailsFx {
         initProductNameColumn();
         initDescriptionColumn();
         initQuantityColumn();
-        addressTable.getColumns()
+
+        this.tableViewDetails.getColumns()
                 .setAll(
                         cartIdColumn,
                         positionColumn,
@@ -86,29 +96,28 @@ public class ShoppingCartDetailsFx {
                 );
     }
 
-    private static void initDescriptionColumn() {
+    private void initDescriptionColumn() {
         productDescriptionColumn = new TableColumn<>("Description");
         productDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("productDescription"));
     }
 
-    private static void initProductNameColumn() {
+    private void initProductNameColumn() {
         productNameColumn = new TableColumn<>("Product name");
         productNameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
     }
 
-    private static void initDiscountColumn() {
+    private void initDiscountColumn() {
         discountColumn = new TableColumn<>("Discount");
         discountColumn.setCellValueFactory(new PropertyValueFactory<>("discount"));
     }
 
-    private static void initPositionColumn() {
+    private void initPositionColumn() {
         positionColumn = new TableColumn<>("Position");
         positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
     }
 
-    public static ObservableList<ShoppingCartDetailsFx> setShoppingCartTableData(final int customerID) {
-        /*shoppingCartDetails.setAll(ShoppingCartDbService.setShoppingCartDetailsFx(customerID));*/
-        List<ShoppingCartDetailsFx> shoppingCartDetailsFX = new ArrayList<>();
+    public static ObservableList<ShoppingCartDetailsTable> getShoppingCartTableData(final int customerID) {
+        List<ShoppingCartDetailsTable> shoppingCartDetailsFX = new ArrayList<>();
         try {
             ResultSet shoppingCartDetailsResult = ShoppingCartDbService.setShoppingCartDetailsFx(customerID);
             while (Objects.requireNonNull(shoppingCartDetailsResult).next()) {
@@ -120,7 +129,7 @@ public class ShoppingCartDetailsFx {
                 final String product_name = shoppingCartDetailsResult.getString("product_name");
                 final String description = shoppingCartDetailsResult.getString("description");
                 shoppingCartDetailsFX.add(
-                        new ShoppingCartDetailsFx(
+                        new ShoppingCartDetailsTable(
                                 card_id,
                                 order_date,
                                 position,
@@ -137,18 +146,22 @@ public class ShoppingCartDetailsFx {
         }
         return shoppingCartDetails;
     }
+    @Override
+    public void setTableViewDetails(int id) {
+        this.tableViewDetails.setItems(ShoppingCartDetailsTable.getShoppingCartTableData(id));
+    }
 
-    private static void initQuantityColumn() {
+    private void initQuantityColumn() {
         quantityColumn = new TableColumn<>("Quantity");
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<ShoppingCartDetailsFx, Integer>("amount"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
     }
 
-    private static void initOrderDateColumnName() {
+    private void initOrderDateColumnName() {
         orderDateColumn = new TableColumn<>("Order date");
-        orderDateColumn.setCellValueFactory(new PropertyValueFactory<ShoppingCartDetailsFx, Date>("orderDate"));
+        orderDateColumn.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
     }
 
-    private static void initOrderIdColumnName() {
+    private void initOrderIdColumnName() {
         cartIdColumn = new TableColumn<>("Order id");
         cartIdColumn.setCellValueFactory(new PropertyValueFactory<>("shoppingCartId"));
     }

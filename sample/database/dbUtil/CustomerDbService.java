@@ -1,11 +1,7 @@
-package sample.dbUtil;
+package sample.database.dbUtil;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import sample.Datamodel.Address;
 import sample.Datamodel.Person;
 
-import javax.swing.text.html.ListView;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,28 +1,29 @@
-package sample.dbUtil;
+package sample.database.dataBaseUtil;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class MysqlConnect {
+public class DbConnectionPool {
     private static final String DATABASE_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/online_shop";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "";
     private static final String MAX_POOL = "250";
 
-    private Connection connection;
-    private Properties properties;
-    private static MysqlConnect instance;
+    private static Connection connection;
+    private static Properties properties;
+    private static DbConnectionPool instance;
 
-    private MysqlConnect() { }
+    private DbConnectionPool() { }
 
-    static MysqlConnect getInstance() {
-        if (instance == null) instance = new MysqlConnect();
+    public static DbConnectionPool getInstance() {
+        if (instance == null) instance = new DbConnectionPool();
         return instance;
     }
 
-    private Properties getProperties() {
+    private static Properties getProperties() {
         if (properties == null) {
             properties = new Properties();
             properties.setProperty("user", USERNAME);
@@ -32,7 +33,7 @@ public class MysqlConnect {
         return properties;
     }
 
-    public Connection connect() {
+    public static Connection connect() {
         if (connection == null) {
             try {
                 Class.forName(DATABASE_DRIVER);
@@ -45,11 +46,11 @@ public class MysqlConnect {
         return connection;
     }
 
-    public void disconnect() {
+    public static void disconnect() {
         if (connection != null) {
             try {
                 connection.close();
-                connection = null;
+                /*connection = null;*/
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.out.println("Disconnecting database failed!");
@@ -57,3 +58,5 @@ public class MysqlConnect {
         }
     }
 }
+
+

@@ -1,8 +1,7 @@
-package sample.dbUtil;
+package sample.database.dbUtil;
 
 import sample.Datamodel.Person;
 import sample.Datamodel.ShoppingCart;
-import sample.userDetails.ShoppingCartDetailsFx;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

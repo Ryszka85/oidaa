@@ -1,6 +1,5 @@
-package sample.userDetails;
+package sample.FxGUI.tableView;
 
-import com.mysql.cj.xdevapi.Table;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,9 +7,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Datamodel.Address;
-import sample.dbUtil.AddressDbService;
+import sample.database.dbUtil.AddressDbService;
 
-public class AddressDetailsFx {
+public class AddressDetailsTable extends UserDetailsTable{
     @FXML
     private static TableColumn<Address, String> postal;
     @FXML
@@ -21,20 +20,30 @@ public class AddressDetailsFx {
     private static TableColumn<Address, String> countryName;
 
     private static ObservableList<Address> addressList;
+    private TableView tableViewDetails;
+
+    public AddressDetailsTable(TableView tableViewDetails) {
+        this.tableViewDetails = tableViewDetails;
+    }
 
     static { addressList = FXCollections.observableArrayList(); }
-
-    public static void setAddressColumnNames(TableView addressTable) {
+    @Override
+    public void setColumnNames() {
         initPostalColumn();
         initCityColumn();
         initStreetAddressColumn();
         initCountryNameColumn();
-        addressTable.getColumns().setAll(postal, city, streetAddress, countryName);
+        tableViewDetails.getColumns().setAll(postal, city, streetAddress, countryName);
     }
 
-    public static ObservableList<Address> setAddressTableData(int id) {
+    public static ObservableList<Address> getAddressTableData(int id) {
         addressList.setAll(AddressDbService.getUserAddress(id));
         return addressList;
+    }
+    @Override
+    public void setTableViewDetails(int id) {
+        setColumnNames();
+        tableViewDetails.setItems(FXCollections.observableArrayList(AddressDbService.getUserAddress(id)));
     }
 
     private static void initCountryNameColumn() {
