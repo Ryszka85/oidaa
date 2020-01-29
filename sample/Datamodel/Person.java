@@ -12,6 +12,13 @@ public class Person {
     private SimpleStringProperty lastName;
     private Date birthDate;
 
+
+    public Person(String firstName, String lastName) {
+        this.firstName = new SimpleStringProperty(firstName);
+        this.lastName = new SimpleStringProperty(lastName);
+        this.id = new SimpleIntegerProperty();
+    }
+
     public Person(int id, String firstName, String lastName, Date birthDate) {
         this(firstName, lastName, birthDate);
         this.id = new SimpleIntegerProperty(id);
@@ -21,6 +28,7 @@ public class Person {
         this.firstName = new SimpleStringProperty(firstName);
         this.lastName = new SimpleStringProperty(lastName);
         this.birthDate = birthDate;
+        this.id = new SimpleIntegerProperty();
     }
 
     public int getId() {

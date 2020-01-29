@@ -20,6 +20,14 @@ import java.util.List;
 import java.util.Objects;
 
 public class ShoppingCartDetailsTable extends UserDetailsTable {
+    public static final String CARD_ID = "card_id";
+    public static final String ORDER_DATE = "order_Date";
+    public static final String POSITION = "position";
+    public static final String QUANTITY = "quantity";
+    public static final String DISCOUNT = "discount";
+    public static final String PRODUCT_NAME = "product_name";
+    public static final String DESCRIPTION = "description";
+
     private SimpleIntegerProperty shoppingCartId;
     private Date orderDate;
     private SimpleIntegerProperty position;
@@ -27,7 +35,6 @@ public class ShoppingCartDetailsTable extends UserDetailsTable {
     private SimpleDoubleProperty discount;
     private SimpleStringProperty productName;
     private SimpleStringProperty productDescription;
-    private List<ShoppingCart> shoppingCarts;
 
     @FXML
     private static TableColumn<ShoppingCartDetailsTable, Integer> cartIdColumn;
@@ -83,7 +90,6 @@ public class ShoppingCartDetailsTable extends UserDetailsTable {
         initProductNameColumn();
         initDescriptionColumn();
         initQuantityColumn();
-
         this.tableViewDetails.getColumns()
                 .setAll(
                         cartIdColumn,
@@ -96,24 +102,33 @@ public class ShoppingCartDetailsTable extends UserDetailsTable {
                 );
     }
 
+    private void initOrderIdColumnName() {
+        final String columnName = "Id";
+        final String orderIdValue = "shoppingCartId";
+        cartIdColumn = new Column<ShoppingCartDetailsTable, Integer>(columnName, orderIdValue).getColumn();
+    }
     private void initDescriptionColumn() {
-        productDescriptionColumn = new TableColumn<>("Description");
-        productDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("productDescription"));
+        final String columnName = "Description";
+        final String descriptionValue = "productDescription";
+        productDescriptionColumn = new Column<ShoppingCartDetailsTable, String>(columnName, descriptionValue).getColumn();
     }
 
     private void initProductNameColumn() {
-        productNameColumn = new TableColumn<>("Product name");
-        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        final String columnName = "Product name";
+        final String productValue = "productName";
+        productNameColumn = new Column<ShoppingCartDetailsTable, String>(columnName, productValue).getColumn();
     }
 
     private void initDiscountColumn() {
-        discountColumn = new TableColumn<>("Discount");
-        discountColumn.setCellValueFactory(new PropertyValueFactory<>("discount"));
+        final String columnName = "Discount";
+        final String discountValue = "discount";
+        discountColumn = new Column<ShoppingCartDetailsTable, Double>(columnName, discountValue).getColumn();
     }
 
     private void initPositionColumn() {
-        positionColumn = new TableColumn<>("Position");
-        positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
+        final String columnName = "Position";
+        final String positionValue = "position";
+        positionColumn = new Column<ShoppingCartDetailsTable, Integer>(columnName, positionValue).getColumn();
     }
 
     public static ObservableList<ShoppingCartDetailsTable> getShoppingCartTableData(final int customerID) {
@@ -121,13 +136,13 @@ public class ShoppingCartDetailsTable extends UserDetailsTable {
         try {
             ResultSet shoppingCartDetailsResult = ShoppingCartDbService.setShoppingCartDetailsFx(customerID);
             while (Objects.requireNonNull(shoppingCartDetailsResult).next()) {
-                final int card_id = shoppingCartDetailsResult.getInt("card_id");
-                final Date order_date = shoppingCartDetailsResult.getDate("order_Date");
-                final int position = shoppingCartDetailsResult.getInt("position");
-                final int quantity = shoppingCartDetailsResult.getInt("quantity");
-                final double discount = shoppingCartDetailsResult.getDouble("discount");
-                final String product_name = shoppingCartDetailsResult.getString("product_name");
-                final String description = shoppingCartDetailsResult.getString("description");
+                final int card_id = getIntegerValue(shoppingCartDetailsResult, CARD_ID);
+                final Date order_date = getDate(shoppingCartDetailsResult);
+                final int position = getIntegerValue(shoppingCartDetailsResult, POSITION);
+                final int quantity = getIntegerValue(shoppingCartDetailsResult, QUANTITY);
+                final double discount = getDiscount(shoppingCartDetailsResult);
+                final String product_name = getStringValue(shoppingCartDetailsResult, PRODUCT_NAME);
+                final String description = getStringValue(shoppingCartDetailsResult, DESCRIPTION);
                 shoppingCartDetailsFX.add(
                         new ShoppingCartDetailsTable(
                                 card_id,
@@ -146,6 +161,23 @@ public class ShoppingCartDetailsTable extends UserDetailsTable {
         }
         return shoppingCartDetails;
     }
+
+    private static String getStringValue(ResultSet shoppingCartDetailsResult, String productName) throws SQLException {
+        return shoppingCartDetailsResult.getString(productName);
+    }
+
+    private static double getDiscount(ResultSet shoppingCartDetailsResult) throws SQLException {
+        return shoppingCartDetailsResult.getDouble(DISCOUNT);
+    }
+
+    private static Date getDate(ResultSet shoppingCartDetailsResult) throws SQLException {
+        return shoppingCartDetailsResult.getDate(ORDER_DATE);
+    }
+
+    private static int getIntegerValue(ResultSet shoppingCartDetailsResult, String card_id2) throws SQLException {
+        return shoppingCartDetailsResult.getInt(card_id2);
+    }
+
     @Override
     public void setTableViewDetails(int id) {
         this.tableViewDetails.setItems(ShoppingCartDetailsTable.getShoppingCartTableData(id));
@@ -161,10 +193,7 @@ public class ShoppingCartDetailsTable extends UserDetailsTable {
         orderDateColumn.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
     }
 
-    private void initOrderIdColumnName() {
-        cartIdColumn = new TableColumn<>("Order id");
-        cartIdColumn.setCellValueFactory(new PropertyValueFactory<>("shoppingCartId"));
-    }
+
 
     public int getPosition() {
         return position.get();

@@ -12,12 +12,13 @@ import sample.FxGUI.tableView.UserDetailsTable;
 import sample.database.dataBaseUtil.DbCustomerDAO;
 import sample.database.dataBaseUtil.DbFactoryDAO;
 
+import java.util.Date;
 import java.util.List;
 
 public class CustomerListView {
     @FXML
     private ListView<Person> customerTable;
-    private ObservableList<Person> customerList;
+    public static ObservableList<Person> customerList;
     private UserDetailsTable shoppingCartDetails;
     private UserDetailsTable addressDetails;
     private CheckBox show_shopping_cart;
@@ -30,7 +31,7 @@ public class CustomerListView {
                             CheckBox show_shopping_cart,
                             CheckBox show_address) {
         this.customerTable = customerTable;
-        this.customerList = FXCollections.observableArrayList();
+        customerList = FXCollections.observableArrayList();
         this.shoppingCartDetails = shoppingCartDetails;
         this.addressDetails = addressDetails;
         this.show_address = show_address;

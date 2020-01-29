@@ -4,7 +4,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 
-public abstract class UserDetailsTable<T extends UserDetailsTable> {
+public abstract class UserDetailsTable {
     public TableView<UserDetailsTable> userDetailsTable;
 
     public static final int SHOPPING_CART_DETAILS = 1;

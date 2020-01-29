@@ -10,6 +10,7 @@ module testDbFx {
     requires mysql.connector.java;
     requires java.sql;
     opens sample;
+    opens sample.database.dataBaseUtil;
     opens sample.FxGUI.fxController;
     opens sample.Datamodel;
     opens sample.FxGUI.tableView;
