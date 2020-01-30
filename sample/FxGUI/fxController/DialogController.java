@@ -79,9 +79,9 @@ public class DialogController {
     }
 
     private Country getCountry(DbCountryDAO countryDAO, String countryName) {
-        Validator.objectNotNull(countryDAO.selectSpecificByString(countryName));
-        final int id_country = countryDAO.selectSpecificByString(countryName)
-                .getId_country();
+        final Country country = countryDAO.selectSpecificByString(countryName);
+        Validator.objectNotNull(country);
+        final int id_country = country.getId_country();
         return new Country(id_country, countryName);
     }
 
